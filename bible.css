@@ -1,0 +1,172 @@
+#select {
+    margin-top: 60px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.book {
+    text-align: center;
+    background-color: #eee;
+    box-shadow: 0 2px 2px #0005;
+    border-radius: 5px;
+    padding: 9px 0;
+    margin: 3px;
+}
+
+#chapters-container {
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #fff5;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+#chapters::-webkit-scrollbar {
+    display: none;
+}
+
+#chapters {
+    display: grid;
+    overflow-y: scroll;
+    resize: none;
+    box-sizing: border-box;
+    grid-template-columns: repeat(5, 1fr);
+    left: 12%;
+    top: 10%;
+    position: fixed;
+    width: 76%;
+    max-height: 70%;
+    padding: 5px;
+    background-color: grey;
+    border: 5px solid grey;
+    border-radius: 15px;
+}
+
+.chapter {
+    height: 25px;
+    text-align: center;
+    color: darkslategray;
+    background-color: #eee;
+    box-shadow: 0 2px 2px #0005;
+    border-radius: 5px;
+    padding: 9px 0;
+    margin: 3px;
+    font-weight: bold;
+}
+
+#title {
+    color: grey;
+    font-weight: bold;
+}
+
+#answer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+    height: 100%;
+    text-align: left;
+    padding: 0 15px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border: none;
+}
+
+.verse-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.verse {
+    line-height: 120%;
+    margin: 5px 0;
+}
+
+.num {
+    color: grey;
+    font-size: 0.8rem;
+    margin: 3px 5px;
+    width: fit-content;
+}
+
+/* --------------- Practice --------------- */
+#btn-practice {
+    width: 100%;
+    padding: 15px;
+    margin: 20px auto;
+    box-sizing: border-box;
+    border-radius: 1000px;
+    border: none;
+    background-color: #6984ff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 3px 5px #0003;
+}
+
+.verse-practice {
+    color: #0000;
+    text-shadow: 0 0 15px #000;
+}
+
+.ta-practice {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 10px 25px 0px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    border: none;
+    background-color: white;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease, height 0.3s ease-in;
+
+    /* height: fit-content; */
+    overflow: hidden;
+    resize: none;
+}
+
+.ta-practice:focus {
+    outline: none;
+    box-shadow: inset 0 0 8px rgba(34, 74, 255, 0.5);
+}
+
+.feedback {
+    background-color: #eee;
+    margin: 10px 0 0 0;
+    padding: 5px;
+    border-radius: 10px;
+    text-shadow: none;
+}
+
+#practice-container {
+    display: none;
+    align-items: center;
+    width: 100%;
+}
+
+#practice-container * {
+    flex-grow: 1;
+    height: 50px;
+    margin: 3px;
+    padding: 0;
+}
+
+#btn-hide {
+    background-color: #ddd;
+}
+
+#btn-hide img {
+    height: 48px;
+}
+
+#btn-cancel {
+    background-color: #f88;
+}
+
+#btn-check {
+    background-color: #3c6;
+}

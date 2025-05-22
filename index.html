@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--
+1. 단어 검색
+2. 카테고리별 검색
+- 용기, 믿음 등 추천 성구
+3. 연습모드
+-->
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>BDSG</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="bible.css" />
+        <link href="https://fonts.googleapis.com/ icon?family=Material+Icons
+        rel="stylesheet">
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=visibility|visibility_off"
+        />
+    </head>
+    <body>
+        <div class="nav">
+            <div id="logo">BibleS</div>
+            <button id="btn-login">?</button>
+        </div>
+
+        <div id="select"></div>
+
+        <div id="root">
+            <input
+                type="text"
+                id="search"
+                placeholder="성구/문장을 검색하세요"
+            />
+
+            <div id="input-container">
+                <div hidden id="btn-container">
+                    <button class="btn-move" id="btn-prev">◀</button>
+                    <button class="btn-move" id="btn-next">▶</button>
+                </div>
+                <textarea
+                    hidden
+                    id="input"
+                    name="textarea"
+                    value=""
+                    placeholder="답을 입력하세요"
+                ></textarea>
+                <button hidden id="btn-practice">연습하기</button>
+                <div id="practice-container">
+                    <button class="btn" id="btn-cancel">취소하기</button>
+                    <button class="btn" id="btn-hide">
+                        <img src="images/visibility_48.png" alt="" />
+                        <img hidden src="images/visibility_off_48.png" alt="" />
+                    </button>
+                    <button class="btn" id="btn-check">채점하기</button>
+                </div>
+            </div>
+
+            <div hidden id="title"></div>
+            <div id="answer"></div>
+            <div hidden id="feedback"></div>
+            <div hidden id="score"></div>
+            <button hidden id="btn">▶</button>
+        </div>
+
+        <div id="end-space" style="height: 150px; background-color: white">
+            　
+        </div>
+
+        <div hidden id="chapters-container">
+            <div id="chapters"></div>
+        </div>
+
+        <script src="check.js"></script>
+        <script src="bible.js"></script>
+        <script src="index.js"></script>
+    </body>
+</html>
