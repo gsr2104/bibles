@@ -175,6 +175,7 @@ function setPractice(isStart) {
     divPracticeContainer.style.display = isStart ? "flex" : "none";
     btnContainer.hidden = isStart;
     btnPractice.hidden = isStart;
+    btnCancel.hidden = !isStart;
     isHide = isStart;
 }
 

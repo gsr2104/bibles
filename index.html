@@ -22,7 +22,12 @@
     <body>
         <div class="nav">
             <div id="logo">BibleS</div>
-            <button id="btn-login">?</button>
+            <button hidden class="btn-righttop" id="btn-practice">
+                연습하기
+            </button>
+            <button hidden class="btn-righttop" id="btn-cancel">
+                취소하기
+            </button>
         </div>
 
         <div id="select"></div>
@@ -46,9 +51,7 @@
                     value=""
                     placeholder="답을 입력하세요"
                 ></textarea>
-                <button hidden id="btn-practice">연습하기</button>
                 <div id="practice-container">
-                    <button class="btn" id="btn-cancel">취소하기</button>
                     <button class="btn" id="btn-hide">
                         <img src="images/visibility_48.png" alt="" />
                         <img hidden src="images/visibility_off_48.png" alt="" />

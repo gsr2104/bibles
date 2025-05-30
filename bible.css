@@ -81,6 +81,7 @@
 }
 
 .verse {
+    width: 100%;
     line-height: 120%;
     margin: 5px 0;
 }
@@ -93,18 +94,26 @@
 }
 
 /* --------------- Practice --------------- */
-#btn-practice {
-    width: 100%;
-    padding: 15px;
-    margin: 20px auto;
+.btn-righttop {
+    position: fixed;
+    top: 15px;
+    right: 2%;
+    padding: 2px 15px;
     box-sizing: border-box;
     border-radius: 1000px;
     border: none;
-    background-color: #6984ff;
     color: white;
-    font-size: 16px;
+    font-size: 0.8rem;
     cursor: pointer;
     box-shadow: 0 3px 5px #0003;
+}
+
+#btn-practice {
+    background-color: #6984ff;
+}
+
+#btn-cancel {
+    background-color: #f88;
 }
 
 .verse-practice {
@@ -161,10 +170,6 @@
 
 #btn-hide img {
     height: 48px;
-}
-
-#btn-cancel {
-    background-color: #f88;
 }
 
 #btn-check {
