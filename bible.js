@@ -17,41 +17,124 @@ const res = [/\d+:\d+[~-]\d+:\d+/i, /\d+:\d+[~-]\d+/i, /\d+:\d+/i];
 let { curBook, curChapter, curVerse } = [0, 0, 0];
 
 let bible;
-let bookList;
+let bookList = [
+    // 책 목록, 한글자로
+    "창",
+    "출",
+    "레",
+    "민",
+    "신",
+    "수",
+    "삿",
+    "룻",
+    "삼상",
+    "삼하",
+    "왕상",
+    "왕하",
+    "대상",
+    "대하",
+    "스",
+    "느",
+    "에",
+    "욥",
+    "시",
+    "잠",
+    "전",
+    "아",
+    "사",
+    "렘",
+    "애",
+    "겔",
+    "단",
+    "호",
+    "욜",
+    "암",
+    "옵",
+    "욘",
+    "미",
+    "나",
+    "합",
+    "습",
+    "학",
+    "슥",
+    "말",
+    "마",
+    "막",
+    "눅",
+    "요",
+    "행",
+    "롬",
+    "고전",
+    "고후",
+    "갈",
+    "엡",
+    "빌",
+    "골",
+    "살전",
+    "살후",
+    "딤전",
+    "딤후",
+    "딛",
+    "몬",
+    "히",
+    "약",
+    "벧전",
+    "벧후",
+    "요일",
+    "요이",
+    "요삼",
+    "유",
+    "계",
+];
+
 let dictWord;
 let isHide = true;
+let isLoaded = false;
+
+for (let b of bookList) {
+    const div = document.createElement("div");
+    div.className = "book";
+    div.innerText = b;
+    div.addEventListener("click", function () {
+        if (isLoaded) {
+            showChapters(b);
+        }
+    });
+    divSelect.appendChild(div);
+}
 
 //////////////////LOAD JSON FILE//////////////////////
-fetch("bible.json")
-    .then((response) => response.json())
-    .then((data) => {
-        bible = data;
-        // console.log(data);
+if (localStorage.getItem("bible")) {
+    bible = JSON.parse(localStorage.getItem("bible"));
+    isLoaded = true;
+} else {
+    fetch("bible.json")
+        .then((response) => response.json())
+        .then((data) => {
+            bible = data;
+            isLoaded = true;
+            localStorage.setItem("bible", JSON.stringify(bible));
+        })
+        .catch((error) => {
+            console.error("JSON 파일을 불러오는 중 오류 발생:", error);
+        });
+}
 
-        bookList = Object.keys(bible); // bible.js 외부 변수 호출
-        for (let b of bookList) {
-            const div = document.createElement("div");
-            div.className = "book";
-            div.innerText = b;
-            div.addEventListener("click", function () {
-                showChapters(b);
-            });
-            divSelect.appendChild(div);
-        }
-    })
-    .catch((error) => {
-        console.error("JSON 파일을 불러오는 중 오류 발생:", error);
-    });
-
-fetch("word_dictionary.json")
-    .then((response) => response.json())
-    .then((data) => {
-        dictWord = data;
-        // console.log(dictWord);
-    })
-    .catch((error) => {
-        console.error("JSON 파일을 불러오는 중 오류 발생:", error);
-    });
+// 단어 사전 불러오기
+if (localStorage.getItem("word_dictionary")) {
+    dictWord = JSON.parse(localStorage.getItem("word_dictionary"));
+} else {
+    fetch("word_dictionary.json")
+        .then((response) => response.json())
+        .then((data) => {
+            dictWord = data;
+            // console.log(dictWord);
+            localStorage.setItem("word_dictionary", JSON.stringify(dictWord));
+        })
+        .catch((error) => {
+            console.error("JSON 파일을 불러오는 중 오류 발생:", error);
+        });
+}
 
 //////////////////LISTENER//////////////////////
 inputSearch.addEventListener("keydown", (e) => {

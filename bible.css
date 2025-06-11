@@ -10,7 +10,13 @@
     box-shadow: 0 2px 2px #0005;
     border-radius: 5px;
     padding: 9px 0;
-    margin: 3px;
+    margin: 5px;
+    transition: background-color 0.1s ease;
+}
+
+.book:hover {
+    background-color: #a1ebad;
+    cursor: pointer;
 }
 
 #chapters-container {
@@ -55,6 +61,12 @@
     padding: 9px 0;
     margin: 3px;
     font-weight: bold;
+    transition: background-color 0.1s ease;
+}
+
+.chapter:hover {
+    background-color: #ddd;
+    cursor: pointer;
 }
 
 #title {
