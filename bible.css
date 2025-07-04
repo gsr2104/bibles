@@ -14,8 +14,36 @@
     transition: background-color 0.1s ease;
 }
 
+.book:nth-child(-n+5) {
+    background-color: var(--book1);
+}
+
+.book:nth-child(n+6):nth-child(-n+23) {
+    background-color: var(--book2);
+}
+
+.book:nth-child(n+23):nth-child(-n+40) {
+    background-color: var(--book3);
+}
+
+.book:nth-child(n+40):nth-child(-n+43) {
+    background-color: var(--book4);
+}
+
+.book:nth-child(44) {
+    background-color: var(--book5);
+}
+
+.book:nth-child(n+45):nth-child(-n+65) {
+    background-color: var(--book6);
+}
+
+.book:nth-child(66) {
+    background-color: var(--book7);
+}
+
 .book:hover {
-    background-color: #a1ebad;
+    background-color: #e0d85d;
     cursor: pointer;
 }
 
@@ -25,7 +53,7 @@
     position: fixed;
     width: 100%;
     height: 100%;
-    background-color: #fff5;
+    background-color: var(--blur-color);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
 }
@@ -46,22 +74,30 @@
     width: 76%;
     max-height: 70%;
     padding: 5px;
-    background-color: grey;
-    border: 5px solid grey;
+    background-color: var(--chapters-bg-color);
+    border: 5px solid var(--chapters-bg-color);
     border-radius: 15px;
 }
 
 .chapter {
     height: 25px;
     text-align: center;
-    color: darkslategray;
-    background-color: #eee;
+    color: var(--chapter-text-color);
+    background-color: var(--chapter-bg-color1);
     box-shadow: 0 2px 2px #0005;
-    border-radius: 5px;
+    border-radius: 3px;
     padding: 9px 0;
-    margin: 3px;
+    margin: 2px;
     font-weight: bold;
     transition: background-color 0.1s ease;
+}
+
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 9),
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 8),
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 7),
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 6),
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 5) {
+    background-color: var(--chapter-bg-color2);
 }
 
 .chapter:hover {
@@ -94,14 +130,22 @@
 
 .verse {
     width: 100%;
-    line-height: 120%;
-    margin: 5px 0;
+    line-height: 180%;
+    letter-spacing: -1.5px;
+    word-spacing: 3px;
+    margin: 15px 0;
+    word-break: break-all;
+    font-size: var(--font-size);
+}
+
+.verse div {
+    font-family: var(--verse-font);
 }
 
 .num {
     color: grey;
     font-size: 0.8rem;
-    margin: 3px 5px;
+    margin: 18px 5px;
     width: fit-content;
 }
 
@@ -114,23 +158,28 @@
     box-sizing: border-box;
     border-radius: 1000px;
     border: none;
-    color: white;
+    color: var(--text-color);
     font-size: 0.8rem;
     cursor: pointer;
     box-shadow: 0 3px 5px #0003;
 }
 
 #btn-practice {
-    background-color: #6984ff;
+    background-color: var(--main-color);
 }
 
 #btn-cancel {
-    background-color: #f88;
+    background-color: var(--cancel-color);
 }
 
 .verse-practice {
     color: #0000;
-    text-shadow: 0 0 15px #000;
+    text-shadow: 0 0 calc(var(--font-size)/1.5) var(--text-color);
+}
+
+.verse-practice::selection {
+    background-color: var(--main-color);
+    color: #ddd;
 }
 
 .ta-practice {
@@ -140,27 +189,51 @@
     border-radius: 10px;
     box-sizing: border-box;
     font-size: 16px;
-    border: none;
-    background-color: white;
+    color: var(--text-color);
+    border: 1px solid var(--unselected-color);
+    background-color: var(--input-color);
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.2s ease, height 0.3s ease-in;
-
     /* height: fit-content; */
     overflow: hidden;
     resize: none;
+    line-height: 180%;
+    letter-spacing: -1.5px;
+    word-spacing: 3px;
+    word-break: keep-all;
+}
+
+.ta-practice::placeholder {
+    color: #888
 }
 
 .ta-practice:focus {
     outline: none;
+    border: 1px solid var(--main-color);
     box-shadow: inset 0 0 8px rgba(34, 74, 255, 0.5);
 }
 
 .feedback {
-    background-color: #eee;
+    background-color: var(--input-color);
+    color: var(--text-color);
     margin: 10px 0 0 0;
     padding: 5px;
     border-radius: 10px;
     text-shadow: none;
+}
+
+.correct {
+    color: black;
+}
+
+.wrong {
+    color: var(--feedback-wrong-color);
+    text-decoration: line-through;
+}
+
+.add {
+    color: var(--feedback-add-color);
+    font-weight: bold;
 }
 
 #practice-container {
@@ -177,7 +250,7 @@
 }
 
 #btn-hide {
-    background-color: #ddd;
+    background-color: var(--btn-color);
 }
 
 #btn-hide img {
@@ -185,5 +258,5 @@
 }
 
 #btn-check {
-    background-color: #3c6;
+    background-color: var(--check-color);
 }

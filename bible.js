@@ -8,90 +8,22 @@ const divChapters = document.getElementById("chapters");
 const btnPrev = document.getElementById("btn-prev");
 const btnNext = document.getElementById("btn-next");
 const btnContainer = document.getElementById("btn-container");
+const imgLogo = document.getElementById("img-logo");
+const btnsLogo = document.getElementById("btns-logo");
 const btnPractice = document.getElementById("btn-practice");
 const btnCancel = document.getElementById("btn-cancel");
 const btnHide = document.getElementById("btn-hide");
 const btnCheck = document.getElementById("btn-check");
 const divPracticeContainer = document.getElementById("practice-container");
-const res = [/\d+:\d+[~-]\d+:\d+/i, /\d+:\d+[~-]\d+/i, /\d+:\d+/i];
 let { curBook, curChapter, curVerse } = [0, 0, 0];
 
 let bible;
-let bookList = [
-    // 책 목록, 한글자로
-    "창",
-    "출",
-    "레",
-    "민",
-    "신",
-    "수",
-    "삿",
-    "룻",
-    "삼상",
-    "삼하",
-    "왕상",
-    "왕하",
-    "대상",
-    "대하",
-    "스",
-    "느",
-    "에",
-    "욥",
-    "시",
-    "잠",
-    "전",
-    "아",
-    "사",
-    "렘",
-    "애",
-    "겔",
-    "단",
-    "호",
-    "욜",
-    "암",
-    "옵",
-    "욘",
-    "미",
-    "나",
-    "합",
-    "습",
-    "학",
-    "슥",
-    "말",
-    "마",
-    "막",
-    "눅",
-    "요",
-    "행",
-    "롬",
-    "고전",
-    "고후",
-    "갈",
-    "엡",
-    "빌",
-    "골",
-    "살전",
-    "살후",
-    "딤전",
-    "딤후",
-    "딛",
-    "몬",
-    "히",
-    "약",
-    "벧전",
-    "벧후",
-    "요일",
-    "요이",
-    "요삼",
-    "유",
-    "계",
-];
 
 let dictWord;
 let isHide = true;
 let isLoaded = false;
 
-for (let b of bookList) {
+for (let b of listBook) {
     const div = document.createElement("div");
     div.className = "book";
     div.innerText = b;
@@ -198,8 +130,8 @@ btnHide.addEventListener("click", () => {
             else c.children[1].classList.add("verse-practice");
         }
     }
-    btnHide.children[0].hidden = isHide;
-    btnHide.children[1].hidden = !isHide;
+    btnHide.children[0].style.display = isHide ? "none" : "block";
+    btnHide.children[1].style.display = !isHide ? "none" : "block";
     isHide = !isHide;
 });
 
@@ -234,19 +166,23 @@ function getWord(book, chapter, verse) {
     return bible[book][chapter][verse].t;
 }
 
-function makeAddressText(book, chapter, startVerse, endVerse = startVerse) {
-    if (startVerse == endVerse) {
-        return book + chapter + ":" + startVerse;
+function makeAddressText(book, c1, c2 = c1, v1, v2 = v1) {
+    if (c1 == c2) {
+        if (v1 == v2) {
+            return book + c1 + ":" + v1;
+        } else {
+            return book + c1 + ":" + v1 + "-" + v2;
+        }
     } else {
-        return book + chapter + ":" + startVerse + "-" + endVerse;
+        return book + c1 + ":" + v1 + "-" + c2 + ":" + v2;
     }
 }
 
-function setCurrentAddress(book, chapter, startVerse, endVerse = startVerse) {
+function setCurrentAddress(book, c1, c2, v1, v2 = v1) {
     updateBook(book);
-    updateChapter(chapter);
-    updateVerse(startVerse);
-    setTitle(makeAddressText(book, chapter, startVerse, endVerse));
+    updateChapter(c1);
+    updateVerse(v1);
+    setTitle(makeAddressText(book, c1, c2, v1, v2));
 }
 
 function setTitle(title = "") {
@@ -266,14 +202,24 @@ function setPractice(isStart) {
 function moveChapterPrev() {
     if (curChapter > 1) {
         let endVerse = Object.keys(bible[curBook][curChapter - 1]).length;
-        search(makeAddressText(curBook, curChapter - 1, 1, endVerse));
+        search(
+            makeAddressText(
+                curBook,
+                curChapter - 1,
+                curChapter - 1,
+                1,
+                endVerse
+            )
+        );
     } else {
-        let bookIndex = bookList.indexOf(curBook);
+        let bookIndex = listBook.indexOf(curBook);
         if (bookIndex == 0) return;
-        prevBook = bookList[bookIndex - 1];
+        prevBook = listBook[bookIndex - 1];
         let lastChapter = Object.keys(bible[prevBook]).length;
         let endVerse = Object.keys(bible[prevBook][lastChapter]).length;
-        search(makeAddressText(prevBook, lastChapter, 1, endVerse));
+        search(
+            makeAddressText(prevBook, lastChapter, lastChapter, 1, endVerse)
+        );
     }
 }
 
@@ -281,14 +227,22 @@ function moveChapterNext() {
     let lastChapter = Object.keys(bible[curBook]).length;
     if (curChapter < lastChapter) {
         let endVerse = Object.keys(bible[curBook][curChapter + 1]).length;
-        search(makeAddressText(curBook, curChapter + 1, 1, endVerse));
+        search(
+            makeAddressText(
+                curBook,
+                curChapter + 1,
+                curChapter + 1,
+                1,
+                endVerse
+            )
+        );
     } else {
-        let bookIndex = bookList.indexOf(curBook);
+        let bookIndex = listBook.indexOf(curBook);
         console.log("rnt", bookIndex, Object.keys(bible).length);
         if (bookIndex + 1 >= Object.keys(bible).length) return;
-        nextBook = bookList[bookIndex + 1];
+        nextBook = listBook[bookIndex + 1];
         let endVerse = Object.keys(bible[nextBook]["1"]).length;
-        search(makeAddressText(nextBook, 1, 1, endVerse));
+        search(makeAddressText(nextBook, 1, 1, 1, endVerse));
     }
 }
 
@@ -298,13 +252,15 @@ function hiddenSelect(isHidden) {
         child.hidden = isHidden;
     }
     btnContainer.hidden = !isHidden;
+    imgLogo.hidden = isHidden;
+    btnsLogo.hidden = !isHidden;
     divTitle.hidden = !isHidden;
 }
 
 function goChapter(book, chapter) {
     divChaptersContainer.hidden = true;
     let endVerse = Object.keys(bible[book][chapter]).length;
-    let keyword = makeAddressText(book, chapter, 1, endVerse);
+    let keyword = makeAddressText(book, chapter, chapter, 1, endVerse);
     // console.log(keyword);
     // inputSearch.value = keyword;
     search(keyword);
@@ -328,80 +284,76 @@ function showChapters(book) {
 
 //////////////////SEARCH//////////////////////
 function search(keyword) {
+    keyword = keyword.replaceAll("~", "-");
+    keyword = keyword.replaceAll("/", ":");
+    keyword = keyword.replaceAll(";", ":");
+
+    keyword = keyword.replace("ㅈ", ":");
+    let checkKeyword = keyword
+        .replaceAll("장", ":")
+        .replaceAll("절", "")
+        .replaceAll(" ", "");
     if (keyword == "") return;
     setPractice(false);
-    // console.log("keyword: ", keyword);
-    let trimKeyword = keyword.replace(/ /g, "");
     setTitle();
-    if (
-        !res[0].exec(trimKeyword) &&
-        !res[1].exec(trimKeyword) &&
-        !res[2].exec(trimKeyword)
-    ) {
+    let isAddress = false;
+    for (r of res) {
+        if (r.exec(checkKeyword)) {
+            isAddress = true;
+            break;
+        }
+    }
+    if (!isAddress) {
         searchWithWord(keyword);
         hiddenSelect(true);
         return;
     }
 
     // Search with address
-    results = searchWithAddress(trimKeyword);
-    html = "";
-    for (v of results) {
-        html += getDivVerse(v[2], v[3]);
-    }
-    divAnswer.innerHTML = html;
+    divAnswer.innerHTML = searchWithAddress(checkKeyword);
 
     hiddenSelect(true);
     btnPractice.hidden = false;
     scrollTop();
 }
 
-function searchWithAddress(keyword) {
-    var result = [];
-    var book, chapter, verse;
-    if (res[0].exec(keyword)) {
-        // console.log("유형 3");
-    } else if (res[1].exec(keyword) || res[2].exec(keyword)) {
-        var i = 0;
-        while (i < keyword.length) {
-            if (isNum(keyword[i])) break;
-            i++;
-        }
-        book = keyword.substr(0, i);
-        var j = i;
-        while (j < keyword.length) {
-            if (keyword[j] == ":") break;
-            j++;
-        }
-        chapter = keyword.substr(i, j - i);
-
-        if (res[1].exec(keyword)) {
-            var sep = keyword.indexOf("~") == -1 ? "-" : "~";
-            var [startVerse, endVerse] = keyword.substr(j + 1).split(sep);
-            // console.log(startVerse, endVerse);
-            for (var l = startVerse; l <= endVerse; l++) {
-                result.push([
-                    book,
-                    Number(chapter),
-                    Number(l),
-                    getWord(book, chapter, l),
-                ]);
+function searchWithAddress(address) {
+    address = address.replaceAll(" ", "");
+    console.log(address);
+    let resultHTML = "";
+    let codes = address2code(address);
+    if (codes.length == 1) {
+        // 단일 성구일 경우
+        let [b, c, v] = code2address(codes[0]);
+        console.log(b, c, v);
+        resultHTML += getDivVerse(v, getWord(b, c, v));
+        setCurrentAddress(b, c, c, v, v);
+    } else if (codes.length == 2) {
+        // 범위 성구일 경우
+        let [b, c1, v1] = code2address(codes[0]);
+        let [_, c2, v2] = code2address(codes[1]);
+        if (c1 == c2) {
+            // 같은 장 내의 범위일 경우
+            for (let v = v1; v <= v2; v++) {
+                resultHTML += getDivVerse(v, getWord(b, c1, v));
             }
-            setCurrentAddress(book, chapter, startVerse, endVerse);
+            setCurrentAddress(b, c1, c2, v1, v2);
         } else {
-            // console.log("유형 1");
-            verse = keyword.substr(j + 1, keyword.length - j);
-            result.push([
-                book,
-                Number(chapter),
-                Number(verse),
-                getWord(book, chapter, verse),
-            ]);
-            setCurrentAddress(book, chapter, verse);
+            // 다른 장의 범위일 경우
+            for (let c = c1; c <= c2; c++) {
+                let _v1, _v2;
+                _v1 = c == c1 ? v1 : 1;
+                _v2 = c == c2 ? v2 : getLastVerse(b, c);
+                // console.log(b, c, _v1, _v2);
+                for (let v = _v1; v <= _v2; v++) {
+                    resultHTML += getDivVerse(c + ":" + v, getWord(b, c, v));
+                }
+            }
+            setCurrentAddress(b, c1, c2, v1, v2);
         }
     }
 
-    return result;
+    return resultHTML;
 }
 
 function searchWithWord(keyword) {
