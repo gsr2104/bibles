@@ -118,6 +118,13 @@ checkboxTheme.addEventListener("change", function () {
 // Initialize theme from localStorage
 document.addEventListener("DOMContentLoaded", function () {
     const theme = localStorage.getItem("theme");
+
+    if (!theme) {
+        // If no theme is set, default to light mode
+        theme = "light";
+        localStorage.setItem("theme", theme);
+    }
+
     if (theme === "dark") {
         checkboxTheme.checked = true;
         for (const [key, value] of Object.entries(dict_dark_mode)) {
