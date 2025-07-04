@@ -117,7 +117,7 @@ checkboxTheme.addEventListener("change", function () {
 
 // Initialize theme from localStorage
 document.addEventListener("DOMContentLoaded", function () {
-    const theme = localStorage.getItem("theme");
+    let theme = localStorage.getItem("theme");
 
     if (!theme) {
         // If no theme is set, default to light mode
