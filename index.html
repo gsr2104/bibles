@@ -10,6 +10,9 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <style>
             @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&display=swap");
+            @import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap");
+            @import url("https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap");
+            @import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
         </style>
         <link
             href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -19,13 +22,19 @@
     <body>
         <div class="nav">
             <div id="logo">
-                <img id="img-logo" src="images/BibleS_icon_cropped.png" alt="">
+                <img
+                    id="img-logo"
+                    src="images/BibleS_icon_cropped.png"
+                    alt=""
+                />
                 <div hidden id="btns-logo">
                     <span id="btn-home" class="material-icons">home</span>
-                    <span id="btn-settings" class="material-icons">settings</span>
+                    <span id="btn-settings" class="material-icons"
+                        >settings</span
+                    >
                 </div>
             </div>
-            
+
             <button hidden class="btn-righttop" id="btn-practice">
                 연습하기
             </button>
@@ -57,8 +66,13 @@
                 ></textarea>
                 <div id="practice-container">
                     <button class="btn" id="btn-hide">
-                        <span class="material-icons" style="font-size: 2.5rem">visibility</span>
-                        <span hidden class="material-icons" style="font-size: 2.5rem; display: none"
+                        <span class="material-icons" style="font-size: 2.5rem"
+                            >visibility</span
+                        >
+                        <span
+                            hidden
+                            class="material-icons"
+                            style="font-size: 2.5rem; display: none"
                             >visibility_off</span
                         >
                     </button>
@@ -73,28 +87,162 @@
             <button hidden id="btn">▶</button>
         </div>
 
-        <div id="end-space">
-            　
-        </div>
+        <div id="end-space">　</div>
 
         <div hidden id="chapters-container">
             <div id="chapters"></div>
         </div>
-        
+
         <div hidden id="settings-container">
             <div id="settings">
-                <div id="settings-fonts">
-                    <div id="settings-fonts-size">
+                <div class="setting" id="settings-fonts">
+                    <div class="setting-label" id="settings-fonts-size">
                         글자 크기
-                    </div> 
-                    <input type="range" min="10" max="100" value="30" id="settings-fonts-size-silder">
+                    </div>
+                    <input
+                        type="range"
+                        min="0.5"
+                        max="7"
+                        step="0.1"
+                        value="1.5"
+                        id="settings-fonts-size-silder"
+                        class="settings-silder"
+                    />
                 </div>
-                <input type="checkbox" id="settings-theme-checkbox" hidden> 
-                
-                <div>밝음/어두움 모드</div>
-                <label for="settings-theme-checkbox" class="toggleSwitch">
-                <span class="toggleButton"></span>
-                </label>
+
+                <div class="setting" id="settings-fonts">
+                    <div class="setting-label" id="settings-fonts-size">
+                        글자 간격
+                    </div>
+                    <input
+                        type="range"
+                        min="-5"
+                        max="10"
+                        step="0.1"
+                        value="1.5"
+                        id="settings-gat-letter-silder"
+                        class="settings-silder"
+                    />
+                </div>
+
+                <div class="setting" id="settings-fonts">
+                    <div class="setting-label" id="settings-fonts-size">
+                        단어 간격
+                    </div>
+                    <input
+                        type="range"
+                        min="0.2"
+                        max="50"
+                        step="0.1"
+                        value="1.5"
+                        id="settings-gap-word-silder"
+                        class="settings-silder"
+                    />
+                </div>
+
+                <div class="setting" id="settings-fonts">
+                    <div class="setting-label" id="settings-fonts-size">
+                        줄 간격
+                    </div>
+                    <input
+                        type="range"
+                        min="100"
+                        max="300"
+                        step="1"
+                        value="1.5"
+                        id="settings-gap-line-silder"
+                        class="settings-silder"
+                    />
+                </div>
+
+                <div class="setting" id="settings-fonts">
+                    <div class="setting-label" id="settings-fonts-size">
+                        절 간격
+                    </div>
+                    <input
+                        type="range"
+                        min="0.5"
+                        max="100"
+                        step="0.1"
+                        value="1.5"
+                        id="settings-gap-verse-silder"
+                        class="settings-silder"
+                    />
+                </div>
+
+                <div class="setting" id="settings-fonts">
+                    <div class="setting-label" id="settings-fonts-size">
+                        글꼴
+                    </div>
+                    <div style="text-align: center">
+                        <div class="cut-container gray">
+                            <input
+                                class="cut-input"
+                                type="radio"
+                                id="cut-radio1"
+                                name="cut"
+                                value="serif"
+                            />
+                            <label class="cut-label" for="cut-radio1"
+                                >기본</label
+                            >
+                            <input
+                                class="cut-input"
+                                type="radio"
+                                id="cut-radio2"
+                                name="cut"
+                                value="Noto Sans KR"
+                            />
+                            <label class="cut-label" for="cut-radio2"
+                                >고딕</label
+                            >
+                            <input
+                                class="cut-input"
+                                type="radio"
+                                id="cut-radio3"
+                                name="cut"
+                                value="Gowun Dodum"
+                            />
+                            <label class="cut-label" for="cut-radio3"
+                                >돋움</label
+                            >
+                            <input
+                                class="cut-input"
+                                type="radio"
+                                id="cut-radio4"
+                                name="cut"
+                                value="Nanum Myeongjo"
+                                checked="true"
+                            />
+                            <label class="cut-label" for="cut-radio4"
+                                >명조</label
+                            >
+                            <input
+                                class="cut-input"
+                                type="radio"
+                                id="cut-radio5"
+                                name="cut"
+                                value="Gowun Batang"
+                                checked="true"
+                            />
+                            <label class="cut-label" for="cut-radio5"
+                                >바탕</label
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting">
+                    <div class="setting-label">밝음/어두움 모드</div>
+                    <input
+                        type="checkbox"
+                        id="settings-theme-checkbox"
+                        hidden
+                    />
+                    <label for="settings-theme-checkbox" class="toggleSwitch">
+                        <span class="toggleButton"></span>
+                    </label>
+                </div>
             </div>
         </div>
 

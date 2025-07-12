@@ -12,21 +12,23 @@
     padding: 9px 0;
     margin: 5px;
     transition: background-color 0.1s ease;
+    font-size: var(--font-size);
+    font-family: var(--verse-font);
 }
 
-.book:nth-child(-n+5) {
+.book:nth-child(-n + 5) {
     background-color: var(--book1);
 }
 
-.book:nth-child(n+6):nth-child(-n+23) {
+.book:nth-child(n + 6):nth-child(-n + 23) {
     background-color: var(--book2);
 }
 
-.book:nth-child(n+23):nth-child(-n+40) {
+.book:nth-child(n + 23):nth-child(-n + 40) {
     background-color: var(--book3);
 }
 
-.book:nth-child(n+40):nth-child(-n+43) {
+.book:nth-child(n + 40):nth-child(-n + 43) {
     background-color: var(--book4);
 }
 
@@ -34,7 +36,7 @@
     background-color: var(--book5);
 }
 
-.book:nth-child(n+45):nth-child(-n+65) {
+.book:nth-child(n + 45):nth-child(-n + 65) {
     background-color: var(--book6);
 }
 
@@ -80,7 +82,7 @@
 }
 
 .chapter {
-    height: 25px;
+    min-height: 25px;
     text-align: center;
     color: var(--chapter-text-color);
     background-color: var(--chapter-bg-color1);
@@ -89,6 +91,7 @@
     padding: 9px 0;
     margin: 2px;
     font-weight: bold;
+    font-size: var(--font-size);
     transition: background-color 0.1s ease;
 }
 
@@ -108,6 +111,8 @@
 #title {
     color: grey;
     font-weight: bold;
+    font-size: var(--font-size);
+    font-family: var(--verse-font);
 }
 
 #answer {
@@ -130,10 +135,10 @@
 
 .verse {
     width: 100%;
-    line-height: 180%;
-    letter-spacing: -1.5px;
-    word-spacing: 3px;
-    margin: 15px 0;
+    line-height: var(--gap-line);
+    letter-spacing: var(--gap-letter);
+    word-spacing: var(--gap-word);
+    margin: var(--gap-verse) 0;
     word-break: break-all;
     font-size: var(--font-size);
 }
@@ -174,7 +179,7 @@
 
 .verse-practice {
     color: #0000;
-    text-shadow: 0 0 calc(var(--font-size)/1.5) var(--text-color);
+    text-shadow: 0 0 calc(var(--font-size) / 1.5) var(--text-color);
 }
 
 .verse-practice::selection {
@@ -188,13 +193,13 @@
     margin: 10px 10px 25px 0px;
     border-radius: 10px;
     box-sizing: border-box;
-    font-size: 16px;
+    font-size: var(--font-size);
     color: var(--text-color);
     border: 1px solid var(--unselected-color);
     background-color: var(--input-color);
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.2s ease, height 0.3s ease-in;
-    /* height: fit-content; */
+    height: fit-content;
     overflow: hidden;
     resize: none;
     line-height: 180%;
@@ -204,7 +209,7 @@
 }
 
 .ta-practice::placeholder {
-    color: #888
+    color: #888;
 }
 
 .ta-practice:focus {

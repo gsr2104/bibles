@@ -1,5 +1,5 @@
 * {
-    font-family: "Noto Sans KR", sans-serif;;
+    font-family: "Noto Sans KR", sans-serif;
 }
 
 /* var(--bg-color) */
@@ -8,14 +8,14 @@
 /* var(--text-color) */
 
 :root {
-    --bg-color: #888; 
+    --bg-color: #888;
     --unselected-color: #888;
     --main-color: #6984ff;
     --cancel-color: #f88;
-    --hover-color: #a1ebad; 
-    --text-color: #888; 
+    --hover-color: #a1ebad;
+    --text-color: #888;
     --font-size: 1rem;
-    --verse-font: "Noto Sans KR", "Noto Serif KR", serif;
+    --verse-font: "Noto Serif KR", serif;
     --input-color: #ddd;
 
     --book1: #888;
@@ -38,12 +38,18 @@
 
     --feedback-add-color: rgb(49, 49, 253);
     --feedback-wrong-color: grey;
+
+    --gap-letter: -1.5px;
+    --gap-word: 3px;
+    --gap-line: 180%;
+    --gap-verse: 15px;
 }
 
 body {
     margin: 0;
     padding: 0;
     background-color: var(--bg-color);
+    transition: background-color 0.3s ease;
     color: var(--text-color);
     font-size: 16px;
 }
@@ -59,6 +65,7 @@ body {
     background-color: var(--bg-color);
     box-shadow: 0 15px 5px var(--bg-color);
     padding-bottom: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #logo {
@@ -231,39 +238,99 @@ body {
     border-radius: 15px;
 }
 
+.setting {
+    margin-bottom: 50px;
+}
+
+.setting-label {
+    font-size: var(--font-size);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.settings-silder {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 50px;
+    background-color: #ccc;
+}
+
+.settings-silder::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 40px;
+    height: 20px;
+    border-radius: 50px;
+    border: 5px solid var(--main-color);
+    background-color: var(--main-color);
+    cursor: pointer;
+}
+
 /* ------------------- DARK ---------------------- */
 
 .toggleSwitch {
-  width: 100px;
-  height: 50px;
-  display: block;
-  position: relative;
-  border-radius: 30px;
-  background-color: #fff;
-  cursor: pointer;
-  margin: 30px;
+    width: 100px;
+    height: 50px;
+    display: block;
+    position: relative;
+    border-radius: 30px;
+    background-color: #fff;
+    cursor: pointer;
+    margin: 30px;
 }
 
 .toggleSwitch .toggleButton {
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: 50%;
-  left: 4px;
-  transform: translateY(-50%);
-  border-radius: 50%;
-  background: #f0e117;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: #f0e117;
 }
 
 #settings-theme-checkbox:checked ~ .toggleSwitch {
-  background: #0b1544;
+    background: #0b1544;
 }
 
 #settings-theme-checkbox:checked ~ .toggleSwitch .toggleButton {
-  left: calc(100% - 44px);
-  background: #fff;
+    left: calc(100% - 44px);
+    background: #fff;
 }
 
-.toggleSwitch, .toggleButton {
-  transition: all 0.2s ease-in;
+.toggleSwitch,
+.toggleButton {
+    transition: all 0.2s ease-in;
+}
+
+/* Cut(절삭) container */
+.cut-container {
+    margin: auto;
+    height: 100%;
+    display: inline-flex;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+.cut-input {
+    display: none;
+}
+.cut-label {
+    padding: 5px 5px;
+    font-size: 24px;
+    color: #fff;
+    background: rgb(47, 81, 233);
+    cursor: pointer;
+    transition: background 0.1s;
+}
+.cut-label:not(:last-of-type) {
+    border-right: 1px solid rgb(61, 30, 173);
+}
+.cut-label:hover {
+    background: rgb(68, 127, 204);
+}
+.cut-input:checked + .cut-label {
+    background: rgb(26, 42, 131);
 }

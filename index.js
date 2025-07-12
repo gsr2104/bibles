@@ -5,9 +5,14 @@ const btnSettings = document.getElementById("btn-settings");
 const divSettingsContainer = document.getElementById("settings-container");
 const divSettings = document.getElementById("settings");
 const silderFontSize = document.getElementById("settings-fonts-size-silder");
+const silderGapLetter = document.getElementById("settings-gat-letter-silder");
+const silderGapWord = document.getElementById("settings-gap-word-silder");
+const silderGapLine = document.getElementById("settings-gap-line-silder");
+const silderGapVerse = document.getElementById("settings-gap-verse-silder");
 const checkboxTheme = document.getElementById("settings-theme-checkbox");
+const cutInputs = document.querySelectorAll(".cut-input");
 
-let current_page = "home" // home, select, view, practice
+let current_page = "home"; // home, select, view, practice
 
 const dict_light_mode = {
     "--bg-color": "#ffffff",
@@ -16,7 +21,6 @@ const dict_light_mode = {
     "--cancel-color": "#f88",
     "--hover-color": "#a1ebad",
     "--text-color": "#333",
-    "--font-size": "1rem",
     "--input-color": "#ddd",
     "--book1": "#d9f3fd",
     "--book2": "#eee",
@@ -35,7 +39,7 @@ const dict_light_mode = {
     "--btn-color": "#ddd",
     "--feedback-add-color": "rgb(49, 49, 253)",
     "--feedback-wrong-color": "grey",
-}
+};
 
 const dict_dark_mode = {
     "--bg-color": "#222",
@@ -44,7 +48,6 @@ const dict_dark_mode = {
     "--cancel-color": "#f88",
     "--hover-color": "#a1ebad",
     "--text-color": "#eee",
-    "--font-size": "1rem",
     "--input-color": "#444",
     "--book1": "#004f6e",
     "--book2": "#383838",
@@ -91,15 +94,43 @@ divSettingsContainer.addEventListener("click", function () {
     divSettingsContainer.hidden = true;
 });
 
-silderFontSize.oninput = function (e) {
-    let fontSize = valueMapping(silderFontSize.value, 
-        silderFontSize.min, 
-        silderFontSize.max, 
-        0.5, 
-        7);
-    setVariable("--font-size", fontSize + "rem");
-    localStorage.setItem("font-size", fontSize);
-};
+silderFontSize.oninput = getSettingFunction(
+    silderFontSize,
+    "--font-size",
+    "rem"
+);
+
+silderGapLetter.oninput = getSettingFunction(
+    silderGapLetter,
+    "--gap-letter",
+    "px"
+);
+
+silderGapWord.oninput = getSettingFunction(silderGapWord, "--gap-word", "px");
+
+silderGapLine.oninput = getSettingFunction(silderGapLine, "--gap-line", "%");
+
+silderGapVerse.oninput = getSettingFunction(
+    silderGapVerse,
+    "--gap-verse",
+    "px"
+);
+
+cutInputs.forEach((input) => {
+    input.addEventListener("change", function () {
+        const selectedFont = this.value;
+        setVariable("--verse-font", selectedFont);
+        localStorage.setItem("--verse-font", selectedFont);
+    });
+});
+
+function getSettingFunction(silder, variable, unit = "rem") {
+    return function (e) {
+        let value = silder.value;
+        setVariable(variable, value + unit);
+        localStorage.setItem(variable, value);
+    };
+}
 
 checkboxTheme.addEventListener("change", function () {
     if (checkboxTheme.checked) {
@@ -137,37 +168,43 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Set initial font size from localStorage
-    const fontSize = getLocalStorageData("font-size", 1);
-    silderFontSize.value = valueMapping(fontSize, 0.5, 7, silderFontSize.min, silderFontSize.max);
-    setVariable("--font-size", fontSize + "rem");
+    // Set initial value from localStorage
+    getSettingValue("--font-size", "rem", silderFontSize, 1);
+
+    getSettingValue("--gap-letter", "px", silderGapLetter, -1.5);
+
+    getSettingValue("--gap-word", "px", silderGapWord, 3);
+
+    getSettingValue("--gap-line", "%", silderGapLine, 180);
+
+    getSettingValue("--gap-verse", "px", silderGapVerse, 15);
+
+    const verseFont = getLocalStorageData("--verse-font", "Nanum Myeongjo");
+    console.log("Verse font:", verseFont);
+    setVariable("--verse-font", verseFont);
+    cutInputs.forEach((input) => {
+        if (input.value === verseFont) {
+            input.checked = true;
+        } else {
+            input.checked = false;
+        }
+    });
 });
 
-function getLocalStorageData(item, defalut=1) {
+function getSettingValue(variable, unit, input, defaultValue) {
+    const value = getLocalStorageData(variable, defaultValue);
+    input.value = value;
+    setVariable(variable, value + unit);
+}
+
+function getLocalStorageData(item, defalut = 1) {
     let value = localStorage.getItem(item);
     if (value === null) {
         return defalut;
     } else {
-        return parseFloat(value);
+        return value;
     }
 }
-
-// if (localStorage.getItem("bible")) {
-//     bible = JSON.parse(localStorage.getItem("bible"));
-//     isLoaded = true;
-// } else {
-//     fetch("bible.json")
-//         .then((response) => response.json())
-//         .then((data) => {
-//             bible = data;
-//             isLoaded = true;
-//             localStorage.setItem("bible", JSON.stringify(bible));
-//         })
-//         .catch((error) => {
-//             console.error("JSON 파일을 불러오는 중 오류 발생:", error);
-//         });
-// }
-
 
 // Utilities
 function setVariable(variable, value) {
@@ -175,5 +212,9 @@ function setVariable(variable, value) {
 }
 
 function valueMapping(value, minValue1, maxValue1, minValue2, maxValue2) {
-    return ((value - minValue1) / (maxValue1 - minValue1)) * (maxValue2 - minValue2) + minValue2;
+    return (
+        ((value - minValue1) / (maxValue1 - minValue1)) *
+            (maxValue2 - minValue2) +
+        minValue2
+    );
 }
