@@ -182,6 +182,31 @@ function keyword2book(keyword) {
     return null; // 매칭되는 책이 없을 경우
 }
 
+function makeCorrectAddress(address) {
+    address = address.trim();
+    address = address
+        .replaceAll("~", "-")
+        .replaceAll("/", ":")
+        .replaceAll(";", ":")
+        .replaceAll(".", ":");
+
+    address = address
+        .replace("ㅈ", ":")
+        .replaceAll("장", ":")
+        .replaceAll("절", "")
+        .replaceAll(" ", "");
+
+    let i = 0;
+    while (i < address.length) {
+        if (isNum(address[i])) break;
+        i++;
+    }
+    book = address.substr(0, i);
+    book = keyword2book(book);
+
+    return book + address.substr(i);
+}
+
 function book2code(book) {
     var code = listBook.indexOf(book);
     code = String(code).padStart(2, "0");
@@ -197,6 +222,7 @@ function getLastVerse(book, chapter) {
 }
 
 function address2code(address) {
+    address = address.trim();
     let type = 0;
     let book, chapter, verse;
     let c1, v1, c2, v2;

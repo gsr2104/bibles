@@ -6,58 +6,55 @@
 
 .book {
     text-align: center;
-    background-color: #eee;
+    background-color: var(--bg-color);
     box-shadow: 0 2px 2px #0005;
     border-radius: 5px;
     padding: 9px 0;
     margin: 5px;
-    transition: background-color 0.1s ease;
+    transition: border 0.2s ease, background-color 0.2s ease;
     font-size: var(--font-size);
     font-family: var(--verse-font);
 }
 
 .book:nth-child(-n + 5) {
-    background-color: var(--book1);
+    border: 3px solid var(--book1);
 }
 
 .book:nth-child(n + 6):nth-child(-n + 23) {
-    background-color: var(--book2);
+    border: 3px solid var(--book2);
 }
 
 .book:nth-child(n + 23):nth-child(-n + 40) {
-    background-color: var(--book3);
+    border: 3px solid var(--book3);
 }
 
 .book:nth-child(n + 40):nth-child(-n + 43) {
-    background-color: var(--book4);
+    border: 3px solid var(--book4);
 }
 
 .book:nth-child(44) {
-    background-color: var(--book5);
+    border: 3px solid var(--book5);
 }
 
 .book:nth-child(n + 45):nth-child(-n + 65) {
-    background-color: var(--book6);
+    border: 3px solid var(--book6);
 }
 
 .book:nth-child(66) {
-    background-color: var(--book7);
+    border: 3px solid var(--book7);
 }
 
-.book:hover {
-    background-color: #e0d85d;
+.book:hover,
+.book:nth-child(-n + 5):hover,
+.book:nth-child(n + 6):nth-child(-n + 23):hover,
+.book:nth-child(n + 23):nth-child(-n + 40):hover,
+.book:nth-child(n + 40):nth-child(-n + 43):hover,
+.book:nth-child(44):hover,
+.book:nth-child(n + 45):nth-child(-n + 65):hover,
+.book:nth-child(66):hover {
+    background-color: var(--hover-color2);
+    border: 3px solid var(--hover-color);
     cursor: pointer;
-}
-
-#chapters-container {
-    top: 0;
-    left: 0;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background-color: var(--blur-color);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
 }
 
 #chapters::-webkit-scrollbar {
@@ -82,29 +79,38 @@
 }
 
 .chapter {
-    min-height: 25px;
+    min-height: 50px;
     text-align: center;
-    color: var(--chapter-text-color);
-    background-color: var(--chapter-bg-color1);
+    color: var(--text-color);
+    /* color: var(--chapter-text-color); */
+    /* background-color: var(--chapter-bg-color1); */
     box-shadow: 0 2px 2px #0005;
     border-radius: 3px;
     padding: 9px 0;
-    margin: 2px;
-    font-weight: bold;
+    margin: 3px;
+    border: 2px solid var(--chapter-bg-color1);
+    /* font-weight: bold; */
     font-size: var(--font-size);
+    font-family: var(--verse-font);
     transition: background-color 0.1s ease;
 }
 
-.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 9),
-.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 8),
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 1),
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 3),
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 5),
 .chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 7),
-.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 6),
-.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 5) {
-    background-color: var(--chapter-bg-color2);
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 9) {
+    /* background-color: var(--chapter-bg-color1); */
 }
 
-.chapter:hover {
+.chapter:hover,
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 1):hover,
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 3):hover,
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 5):hover,
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 7):hover,
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 9):hover {
     background-color: #ddd;
+    color: var(--grey);
     cursor: pointer;
 }
 
@@ -141,6 +147,10 @@
     margin: var(--gap-verse) 0;
     word-break: break-all;
     font-size: var(--font-size);
+    transition: box-shadow 0.2s ease, background 0.2s ease;
+    padding: 3px;
+    border-radius: 10px;
+    transition: box-shadow 1s ease;
 }
 
 .verse div {
@@ -149,15 +159,15 @@
 
 .num {
     color: grey;
-    font-size: 0.8rem;
-    margin: 18px 5px;
+    font-size: calc(var(--font-size) / 2);
+    margin-top: calc(var(--font-size) / 2);
+
+    margin-right: calc(var(--font-size) / 2);
     width: fit-content;
 }
 
 /* --------------- Practice --------------- */
 .btn-righttop {
-    position: fixed;
-    top: 15px;
     right: 2%;
     padding: 2px 15px;
     box-sizing: border-box;
@@ -177,13 +187,21 @@
     background-color: var(--cancel-color);
 }
 
-.verse-practice {
+.word-practice {
     color: #0000;
     text-shadow: 0 0 calc(var(--font-size) / 1.5) var(--text-color);
+    transition: all 0.2s ease;
+    cursor: crosshair;
+}
+
+.word-practice:hover {
+    color: var(--text-color);
+    text-shadow: 0 0 0 var(--hover-color);
 }
 
 .verse-practice::selection {
-    background-color: var(--main-color);
+    /* background-color: var(--input-color); */
+    text-shadow: 0 0 0 var(--hover-color);
     color: #ddd;
 }
 
@@ -195,8 +213,8 @@
     box-sizing: border-box;
     font-size: var(--font-size);
     color: var(--text-color);
-    border: 1px solid var(--unselected-color);
-    background-color: var(--input-color);
+    border: 2px solid var(--input-color);
+    background-color: var(--bg-color);
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.2s ease, height 0.3s ease-in;
     height: fit-content;
@@ -208,13 +226,18 @@
     word-break: keep-all;
 }
 
+#input-folder-verse {
+    height: 50vh;
+    overflow: auto;
+}
+
 .ta-practice::placeholder {
     color: #888;
 }
 
 .ta-practice:focus {
     outline: none;
-    border: 1px solid var(--main-color);
+    border: 2px solid var(--main-color);
     box-shadow: inset 0 0 8px rgba(34, 74, 255, 0.5);
 }
 
@@ -264,4 +287,228 @@
 
 #btn-check {
     background-color: var(--check-color);
+}
+
+/* --------------------- FOLDER ---------------------- */
+#folders-title {
+    font-size: 2rem;
+    text-align: center;
+    text-shadow: 0 0 15px var(--bg-color);
+    background: linear-gradient(
+        var(--bg-color) 40%,
+        var(--input-color) 50%,
+        var(--bg-color) 60%
+    );
+}
+
+#folders {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.folder {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.folder-icon {
+    color: var(--book1);
+    font-size: 10rem !important;
+    text-shadow: 0 -5px 0 var(--text-color);
+    transition: all 0.15s linear;
+}
+
+.folder-icon:hover {
+    transform: rotateX(30deg) translateY(6px);
+    text-shadow: 0 -19px 0 var(--main-color);
+}
+
+.folder-label {
+    top: -84px;
+    position: relative;
+    color: var(--text-color);
+    font-family: var(--verse-font);
+    pointer-events: none;
+    /* font-weight: bold; */
+}
+
+#folder-add {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 4px dashed var(--text-color);
+    text-align: center;
+    color: var(--text-color);
+    cursor: pointer;
+    margin: 10px;
+    transition: all 0.2s linear;
+}
+
+#folder-add span {
+    margin: auto;
+    font-size: 50px !important;
+    margin: 25px;
+    transition: all 0.2s linear;
+}
+
+#folder-add:hover {
+    animation: 1s folder-add-anim forwards;
+    color: var(--main-color);
+    border: 4px dashed var(--main-color);
+}
+
+@keyframes folder-add-anim {
+    from {
+        transform: rotateZ(0deg);
+    }
+    to {
+        transform: rotateZ(360deg);
+    }
+}
+
+#folder-add:hover span {
+    font-size: 80px !important;
+    margin: 10px;
+}
+
+.blur-container {
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: var(--blur-color);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+    resize: none;
+    box-sizing: border-box;
+    left: 12%;
+    top: 10%;
+    position: fixed;
+    width: 76%;
+    max-height: 70%;
+    padding: 5px;
+    background-color: var(--chapters-bg-color);
+    border: 5px solid var(--chapters-bg-color);
+    border-radius: 15px;
+    z-index: -50;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
+}
+
+#folder-setting-label {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#input-folder-name {
+    border: 2px solid var(--input-color);
+    border-radius: 100px;
+    width: 80%;
+    text-align: center;
+    font-size: 1.2rem;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin-bottom: 20px;
+    transition: border 0.2s ease;
+}
+
+#input-folder-name:focus {
+    outline: none;
+    border: 2px solid var(--main-color);
+}
+
+#folder-adder-btn-container {
+    display: flex;
+    width: 100%;
+}
+
+#folder-colors {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.folder-color-label div {
+    margin: 5px;
+    width: 64px;
+    height: 64px;
+    background-color: var(--book1);
+    border: 4px solid var(--bg-color);
+    border-radius: 10px;
+    transition: border 0.2s ease;
+    cursor: pointer;
+}
+
+.folder-color:checked + .folder-color-label div {
+    border: 4px solid var(--main-color);
+}
+
+.btn-main {
+    background-color: var(--main-color);
+    border-radius: 100px;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.btn-main:hover {
+    background-color: var(--main-color2);
+}
+
+#folder-name-alert {
+    color: var(--main-color);
+}
+
+#folder-name-label {
+    background-color: var(--text-color);
+    padding: 0 5px;
+    font-weight: bold;
+}
+
+.verse-save {
+    color: grey;
+    border: 2px solid var(--input-color);
+    padding: 4px 10px;
+    transition: color 0.1s ease, border 0.1s ease;
+}
+
+.verse-selected {
+    color: var(--text-color);
+    border: 2px solid var(--main-color);
+}
+
+.btn-save {
+    border: none;
+    width: 64px;
+    height: 64px;
+    border-radius: 1000px;
+    color: white;
+    background-color: var(--main-color) !important;
+}
+
+.btn-save span {
+    text-align: center;
 }

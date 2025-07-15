@@ -21,19 +21,22 @@
     </head>
     <body>
         <div class="nav">
-            <div id="logo">
+            <span id="logo">
                 <img
                     id="img-logo"
                     src="images/BibleS_icon_cropped.png"
                     alt=""
                 />
-                <div hidden id="btns-logo">
+                <span hidden id="btns-logo">
                     <span id="btn-home" class="material-icons">home</span>
                     <span id="btn-settings" class="material-icons"
                         >settings</span
                     >
-                </div>
-            </div>
+                    <span id="btn-select" class="material-icons">
+                        bookmark_add</span
+                    >
+                </span>
+            </span>
 
             <button hidden class="btn-righttop" id="btn-practice">
                 연습하기
@@ -41,13 +44,67 @@
             <button hidden class="btn-righttop" id="btn-cancel">
                 취소하기
             </button>
+
+            <input type="text" id="search" placeholder="검색하세요" />
         </div>
 
         <div id="select"></div>
 
-        <div id="root">
-            <input type="text" id="search" placeholder="검색하세요" />
+        <div id="folders-container">
+            <div id="folders-title">폴더</div>
+            <div id="folders">
+                <div id="folder-add">
+                    <span class="material-icons"> add</span>
+                </div>
+            </div>
+        </div>
 
+        <div hidden id="folder-adder-container" class="blur-container">
+            <div id="folder-adder" class="container">
+                <div id="folder-setting-label">폴더 이름</div>
+                <div id="folder-name-alert" hidden>
+                    폴더 이름을 입력해주세요.
+                </div>
+                <input
+                    type="text"
+                    name="input-folder-name"
+                    id="input-folder-name"
+                    placeholder="폴더 이름"
+                />
+                <div id="folder-setting-label">폴더 색상</div>
+                <div id="folder-colors"></div>
+
+                <button id="btn-folder-create" class="btn-main">만들기</button>
+            </div>
+        </div>
+
+        <div hidden id="folder-verse-container" class="blur-container">
+            <div id="folder-verse" class="container">
+                <div id="folder-setting-label">
+                    <span id="folder-name-label"></span> 폴더 구절 추가
+                </div>
+                <textarea
+                    id="input-folder-verse"
+                    class="ta-practice"
+                    name="textarea"
+                    value=""
+                    placeholder="등록할 성구를 입력하세요
+(예: 마1:21, 계1:1-8, 롬8장)"
+                ></textarea>
+
+                <button id="btn-folder-verse" class="btn-main">완료</button>
+
+                <button
+                    id="btn-folder-delete"
+                    class="btn-main"
+                    style="background-color: var(--cancel-color)"
+                >
+                    폴더 제거
+                </button>
+            </div>
+        </div>
+
+        <div id="root">
             <div id="input-container">
                 <div hidden id="btn-container">
                     <button class="btn-move" id="btn-prev">
@@ -78,6 +135,20 @@
                     </button>
                     <button class="btn" id="btn-check">채점하기</button>
                 </div>
+                <div hidden id="save-container">
+                    <select name="" id="select-save">
+                        <option value="1">청사성구</option>
+                        <option value="2">핵심성구</option>
+                        <option value="3">내맘</option>
+                        <option value="4">내 인생성구</option>
+                    </select>
+                    <button class="btn-save" id="btn-hide">
+                        <span class="material-icons">create_new_folder</span>
+                    </button>
+                    <button class="btn-save" id="btn-hide">
+                        <span class="material-icons">add</span>
+                    </button>
+                </div>
             </div>
 
             <div hidden id="title"></div>
@@ -89,12 +160,13 @@
 
         <div id="end-space">　</div>
 
-        <div hidden id="chapters-container">
-            <div id="chapters"></div>
+        <div hidden id="chapters-container" class="blur-container">
+            <div id="chapters" class="container"></div>
         </div>
 
         <div hidden id="settings-container">
             <div id="settings">
+                <div id="setting-title">설정</div>
                 <div class="setting" id="settings-fonts">
                     <div class="setting-label" id="settings-fonts-size">
                         글자 크기
@@ -103,7 +175,7 @@
                         type="range"
                         min="0.5"
                         max="7"
-                        step="0.1"
+                        step="0.02"
                         value="1.5"
                         id="settings-fonts-size-silder"
                         class="settings-silder"
@@ -250,5 +322,6 @@
         <script src="check.js"></script>
         <script src="bible.js"></script>
         <script src="index.js"></script>
+        <script src="save.js"></script>
     </body>
 </html>

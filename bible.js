@@ -22,12 +22,17 @@ let bible;
 let dictWord;
 let isHide = true;
 let isLoaded = false;
+let answers = [];
 
 for (let b of listBook) {
     const div = document.createElement("div");
     div.className = "book";
     div.innerText = b;
     div.addEventListener("click", function () {
+        if (getLastChapter(b) == 1) {
+            goChapter(b, 1);
+            return;
+        }
         if (isLoaded) {
             showChapters(b);
         }
@@ -73,11 +78,13 @@ inputSearch.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
         e.preventDefault();
         search(inputSearch.value);
+        current_page = "view";
     }
 });
 
 divChaptersContainer.addEventListener("click", function () {
     divChaptersContainer.hidden = true;
+    current_page = "home";
 });
 
 divChapters.addEventListener("click", function (event) {
@@ -94,8 +101,18 @@ btnNext.addEventListener("click", () => {
 
 btnPractice.addEventListener("click", () => {
     entry = [];
+    answers = [];
     for (const c of divAnswer.children) {
         c.children[1].classList.add("verse-practice");
+        c.children[1].classList.add("verse-practice-temp");
+        let v = c.children[1].innerText;
+        answers.push(v);
+        let texts = v.split(" ");
+        let verseHTML = "";
+        for (let i = 0; i < texts.length; i++) {
+            verseHTML += `<span class="word-practice word-practice-temp">${texts[i]} </span>`;
+        }
+        c.children[1].innerHTML = verseHTML;
         entry.push(c);
         let textarea = document.createElement("textarea");
         textarea.className = "ta-practice";
@@ -104,6 +121,29 @@ btnPractice.addEventListener("click", () => {
         textarea.addEventListener("input", () => {
             textarea.style.height = "auto"; //height 초기화
             textarea.style.height = textarea.scrollHeight + "px";
+        });
+        textarea.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                console.log("Enter pressed");
+                const formElements = Array.from(
+                    document.querySelectorAll(".ta-practice")
+                ).filter((el) => !el.disabled && el.tabIndex !== -1);
+
+                const currentIndex = formElements.indexOf(textarea);
+
+                // 쉬프트를 누르고 엔터를 누르면 반대로 이동
+                if (e.shiftKey) {
+                    if (currentIndex > 0) {
+                        formElements[currentIndex - 1].focus();
+                    }
+                } else if (
+                    currentIndex > -1 &&
+                    currentIndex < formElements.length - 1
+                ) {
+                    formElements[currentIndex + 1].focus();
+                }
+            }
         });
         // entry.push(textarea);
 
@@ -115,19 +155,34 @@ btnPractice.addEventListener("click", () => {
         c.children[1].appendChild(textarea);
     }
     setPractice(true);
+    current_page = "practice";
     // divAnswer.innerHTML = "";
     // for (const e of entry) divAnswer.appendChild(e);
 });
 
 btnCancel.addEventListener("click", () => {
     search(divTitle.innerText);
+    current_page = "view";
 });
 
 btnHide.addEventListener("click", () => {
     for (const c of divAnswer.children) {
-        if (c.className == "verse-container") {
-            if (isHide) c.children[1].classList.remove("verse-practice");
-            else c.children[1].classList.add("verse-practice");
+        let verse = c.children[1];
+        let words = verse.children;
+        console.log(words);
+        if (isHide) {
+            for (const w of words) {
+                // console.log(w);
+                if (w.classList.contains("word-practice-temp")) {
+                    w.classList.remove("word-practice");
+                }
+            }
+        } else {
+            for (const w of words) {
+                if (w.classList.contains("word-practice-temp")) {
+                    w.classList.add("word-practice");
+                }
+            }
         }
     }
     btnHide.children[0].style.display = isHide ? "none" : "block";
@@ -136,16 +191,20 @@ btnHide.addEventListener("click", () => {
 });
 
 btnCheck.addEventListener("click", () => {
+    let idx = 0;
     for (const c of divAnswer.children) {
-        let value = c.children[1].children[2].value;
+        let verse = c.children[1];
+        let value = verse.lastChild.value;
         if (value == "") {
-            c.children[1].children[1].hidden = true;
+            verse.children[1].hidden = true;
             continue;
         }
-        let answer = c.children[1].children[0].innerText;
+        let answer = answers[idx];
+        console.log(answer, value);
         let feedback = compareWords(answer, value);
-        c.children[1].children[1].innerHTML = feedback;
-        c.children[1].children[1].hidden = false;
+        verse.children[verse.children.length - 2].innerHTML = feedback;
+        verse.children[verse.children.length - 2].hidden = false;
+        idx += 1;
     }
 });
 
@@ -246,11 +305,25 @@ function moveChapterNext() {
     }
 }
 
+// 요소들: 책, 폴더, 좌우버튼, 로고, 제목, 연습버튼
+let showList = {
+    view: {
+        logo: false,
+        book: false,
+        folder: false,
+        move: true,
+        title: true,
+        practice: true,
+        save: true,
+    },
+};
+
 //////////////////ABOUT SELECT//////////////////////
 function hiddenSelect(isHidden) {
     for (const child of divSelect.children) {
         child.hidden = isHidden;
     }
+    foldersContainer.hidden = isHidden;
     btnContainer.hidden = !isHidden;
     imgLogo.hidden = isHidden;
     btnsLogo.hidden = !isHidden;
@@ -280,13 +353,15 @@ function showChapters(book) {
         });
         divChapters.appendChild(div);
     }
+    current_page = "select";
 }
 
 //////////////////SEARCH//////////////////////
-function search(keyword) {
+function search(keyword, showBook = false) {
     keyword = keyword.replaceAll("~", "-");
     keyword = keyword.replaceAll("/", ":");
     keyword = keyword.replaceAll(";", ":");
+    keyword = keyword.replaceAll(".", ":");
 
     keyword = keyword.replace("ㅈ", ":");
     let checkKeyword = keyword
@@ -309,15 +384,25 @@ function search(keyword) {
         return;
     }
 
+    let splitedWithComma = checkKeyword.split(",");
     // Search with address
-    divAnswer.innerHTML = searchWithAddress(checkKeyword);
+    if (splitedWithComma.length == 1)
+        divAnswer.innerHTML = searchWithAddress(checkKeyword, showBook);
+    else {
+        divAnswer.innerHTML = "";
+        for (const k of splitedWithComma) {
+            console.log(k);
+            divAnswer.innerHTML += searchWithAddress(k, showBook);
+            setTitle(current_folder);
+        }
+    }
 
     hiddenSelect(true);
     btnPractice.hidden = false;
     scrollTop();
 }
 
-function searchWithAddress(address) {
+function searchWithAddress(address, showBook = false) {
     address = address.replaceAll(" ", "");
     console.log(address);
     let resultHTML = "";
@@ -326,7 +411,7 @@ function searchWithAddress(address) {
         // 단일 성구일 경우
         let [b, c, v] = code2address(codes[0]);
         console.log(b, c, v);
-        resultHTML += getDivVerse(v, getWord(b, c, v));
+        resultHTML += getDivVerse(showBook ? address : v, getWord(b, c, v));
         setCurrentAddress(b, c, c, v, v);
     } else if (codes.length == 2) {
         // 범위 성구일 경우
@@ -335,7 +420,10 @@ function searchWithAddress(address) {
         if (c1 == c2) {
             // 같은 장 내의 범위일 경우
             for (let v = v1; v <= v2; v++) {
-                resultHTML += getDivVerse(v, getWord(b, c1, v));
+                resultHTML += getDivVerse(
+                    showBook ? b + c1 + ":" + v : v,
+                    getWord(b, c1, v)
+                );
             }
             setCurrentAddress(b, c1, c2, v1, v2);
         } else {
@@ -346,7 +434,10 @@ function searchWithAddress(address) {
                 _v2 = c == c2 ? v2 : getLastVerse(b, c);
                 // console.log(b, c, _v1, _v2);
                 for (let v = _v1; v <= _v2; v++) {
-                    resultHTML += getDivVerse(c + ":" + v, getWord(b, c, v));
+                    resultHTML += getDivVerse(
+                        showBook ? b + c + ":" + v : c + ":" + v,
+                        getWord(b, c, v)
+                    );
                 }
             }
             setCurrentAddress(b, c1, c2, v1, v2);

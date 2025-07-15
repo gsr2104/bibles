@@ -12,15 +12,16 @@ const silderGapVerse = document.getElementById("settings-gap-verse-silder");
 const checkboxTheme = document.getElementById("settings-theme-checkbox");
 const cutInputs = document.querySelectorAll(".cut-input");
 
-let current_page = "home"; // home, select, view, practice
+let current_page = "home"; // home, select, view, practice, settings
 
 const dict_light_mode = {
     "--bg-color": "#ffffff",
     "--unselected-color": "#888888",
     "--main-color": "#6984ff",
     "--cancel-color": "#f88",
-    "--hover-color": "#a1ebad",
-    "--text-color": "#333",
+    "--hover-color": "#ffee00",
+    "--hover-color2": "#fffaafff",
+    "--text-color": "#111",
     "--input-color": "#ddd",
     "--book1": "#d9f3fd",
     "--book2": "#eee",
@@ -29,6 +30,7 @@ const dict_light_mode = {
     "--book5": "#d2f5ca",
     "--book6": "#f5def3",
     "--book7": "#f9ffbf",
+    "--book7": "#fbb9fdff",
     "--blur-color": "#fff3",
     "--chapters-bg-color": "grey",
     "--chapter-bg-color1": "#eee",
@@ -47,6 +49,7 @@ const dict_dark_mode = {
     "--main-color": "#6984ff",
     "--cancel-color": "#f88",
     "--hover-color": "#a1ebad",
+    "--hover-color2": "#726d2cff",
     "--text-color": "#eee",
     "--input-color": "#444",
     "--book1": "#004f6e",
@@ -56,9 +59,10 @@ const dict_dark_mode = {
     "--book5": "#164b0a",
     "--book6": "#63195d",
     "--book7": "#5b5c0f",
+    "--book8": "#3e0c5aff",
     "--blur-color": "rgba(0, 0, 0, 0.333)",
-    "--chapters-bg-color": "rgb(61, 61, 61)",
-    "--chapter-bg-color1": "#888",
+    "--chapters-bg-color": "rgba(61, 61, 61, 0.9)",
+    "--chapter-bg-color1": "#aaa",
     "--chapter-bg-color2": "#aaa",
     "--chapter-text-color": "#222",
     "--btn-move-color": "rgba(117, 117, 117, 0.2)",
@@ -84,6 +88,7 @@ divLogo.addEventListener("click", function () {
 
 btnSettings.addEventListener("click", function () {
     divSettingsContainer.hidden = false;
+    current_page = "settings";
 });
 
 divSettings.addEventListener("click", function (event) {
@@ -92,6 +97,7 @@ divSettings.addEventListener("click", function (event) {
 
 divSettingsContainer.addEventListener("click", function () {
     divSettingsContainer.hidden = true;
+    current_page = "view";
 });
 
 silderFontSize.oninput = getSettingFunction(
@@ -203,6 +209,99 @@ function getLocalStorageData(item, defalut = 1) {
         return defalut;
     } else {
         return value;
+    }
+}
+
+// Keyboard Shortcuts
+document.addEventListener("keydown", function (event) {
+    let tag = event.target.nodeName.toLowerCase();
+    let tag_class = event.target.className.toLowerCase();
+    // console.log("Key pressed:", event.key, "in tag:", tag, "class:", tag_class);
+    if (tag === "textarea" && tag_class != "ta-practice") {
+        // console.log("Ignoring key event in textarea");
+        return;
+    }
+    if (tag === "input") {
+        // console.log("Ignoring key event in input");
+        return;
+    }
+
+    shortcuts(event, "pressed", tag);
+});
+
+document.addEventListener("keyup", function (event) {
+    let tag = event.target.nodeName.toLowerCase();
+    // console.log("Key released:", event.key, "in tag:", tag);
+    if (tag === "input" || tag === "textarea") {
+        // Ignore key events in input or textarea
+        // return;
+    }
+
+    shortcuts(event, "released", tag);
+});
+
+function shortcuts(e, state, tag) {
+    switch (e.key) {
+        case "ArrowLeft":
+            if (current_page === "view" && state === "pressed") {
+                document.getElementById("btn-prev").click();
+            }
+            break;
+        case "ArrowRight":
+            if (current_page === "view" && state === "pressed") {
+                document.getElementById("btn-next").click();
+            }
+            break;
+        case "Enter":
+            if (current_page === "view" && state === "pressed") {
+                document.getElementById("btn-practice").click();
+                current_page = "practice";
+            }
+            break;
+        case "Escape":
+            if (state === "pressed") {
+                if (current_page === "practice") {
+                    document.getElementById("btn-cancel").click();
+                    current_page = "view";
+                } else if (current_page === "view") {
+                    // Go to home
+                    location.reload(true);
+                } else if (current_page === "home") {
+                    // Do nothing, already at home
+                } else {
+                    // Close settings
+                    divSettingsContainer.hidden = true;
+                    divChaptersContainer.hidden = true;
+                    current_page = "view";
+                }
+            }
+            break;
+        case "Control":
+            if (state === "released") {
+                if (current_page === "practice") {
+                    isHide = false;
+                    document.getElementById("btn-hide").click();
+                }
+            } else if (state === "pressed") {
+                if (current_page === "practice") {
+                    isHide = true;
+                    document.getElementById("btn-hide").click();
+                }
+            }
+            break;
+        case "/":
+            if (
+                state === "pressed" &&
+                current_page !== "settings" &&
+                current_page !== "select" &&
+                tag !== "input" &&
+                tag !== "textarea"
+            ) {
+                document.getElementById("search").focus();
+                document.getElementById("search").value = "dasdasdsad";
+                current_page = "select";
+            }
+            break;
     }
 }
 
