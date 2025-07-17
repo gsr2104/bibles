@@ -97,28 +97,28 @@ textarea.addEventListener("input", () => {
     textarea.style.height = textarea.scrollHeight + "px";
 });
 
-btnSelect.addEventListener("click", () => {
-    entry = [];
-    answers = [];
-    for (const c of divAnswer.children) {
-        let v = c.children[1];
-        v.classList.add("verse-save");
-        v.addEventListener("click", (e) => {
-            if (v.classList.contains("verse-selected")) {
-                v.classList.remove("verse-selected");
-            } else {
-                v.classList.add("verse-selected");
-            }
-        });
-    }
-    btnContainer.hidden = true;
-    btnPractice.hidden = true;
-    btnCancel.hidden = false;
-    // setPractice(true);
-    current_page = "save";
-    // divAnswer.innerHTML = "";
-    // for (const e of entry) divAnswer.appendChild(e);
-});
+// btnSelect.addEventListener("click", () => {
+//     entry = [];
+//     answers = [];
+//     for (const c of divAnswer.children) {
+//         let v = c.children[1];
+//         v.classList.add("verse-save");
+//         v.addEventListener("click", (e) => {
+//             if (v.classList.contains("verse-selected")) {
+//                 v.classList.remove("verse-selected");
+//             } else {
+//                 v.classList.add("verse-selected");
+//             }
+//         });
+//     }
+//     btnContainer.hidden = true;
+//     btnPractice.hidden = true;
+//     btnCancel.hidden = false;
+//     // setPractice(true);
+//     current_page = "save";
+//     // divAnswer.innerHTML = "";
+//     // for (const e of entry) divAnswer.appendChild(e);
+// });
 
 btnFolderAdd.addEventListener("click", (e) => {
     folderAdderContainer.hidden = false;
