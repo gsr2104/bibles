@@ -50,7 +50,6 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--bg-color);
-    transition: background-color 0.3s ease;
     color: var(--text-color);
     font-size: 16px;
 }
@@ -61,6 +60,7 @@ body {
     width: 100%;
     height: 50px;
     display: flex;
+    z-index: 100;
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
@@ -70,10 +70,20 @@ body {
 }
 
 #logo {
+    white-space: nowrap;
     padding: 0px 8px;
+    box-sizing: border-box;
     color: var(--main-color);
     font-weight: bold;
     cursor: pointer;
+    flex-grow: 5;
+    flex-shrink: 0;
+}
+
+#logo button {
+    margin-left: 3%;
+    position: relative;
+    top: -5px;
 }
 
 #img-logo {
@@ -82,7 +92,7 @@ body {
 }
 
 #btns-logo * {
-    padding: 0 3px;
+    padding: 0 0.1%;
 }
 
 #root {
@@ -111,16 +121,18 @@ body {
 }
 
 #search {
-    width: 50%;
+    min-width: 10%;
     color: var(--text-color);
     border-radius: 1000px;
     box-sizing: border-box;
     text-align: center;
     font-size: 16px;
     border: 2px solid var(--input-color);
+    margin: 0 10px;
     background-color: var(--bg-color);
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.2s ease, border 0.2s ease;
+    flex-grow: 1;
 }
 
 #search::placeholder {

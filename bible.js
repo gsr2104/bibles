@@ -161,7 +161,11 @@ btnPractice.addEventListener("click", () => {
 });
 
 btnCancel.addEventListener("click", () => {
-    search(divTitle.innerText);
+    if (inFolder) {
+        moveToFolder(current_folder);
+    } else {
+        search(divTitle.innerText);
+    }
     current_page = "view";
 });
 
@@ -197,6 +201,7 @@ btnCheck.addEventListener("click", () => {
         let value = verse.lastChild.value;
         if (value == "") {
             verse.children[1].hidden = true;
+            idx += 1;
             continue;
         }
         let answer = answers[idx];
@@ -346,7 +351,7 @@ function showChapters(book) {
     for (let c of chapters) {
         const div = document.createElement("div");
         div.className = "chapter";
-        div.innerText = c;
+        div.innerHTML = `<div class="chapter-num">${c}</div>`;
         div.addEventListener("click", function () {
             console.log(c);
             goChapter(book, c);
@@ -391,12 +396,13 @@ function search(keyword, showBook = false) {
     else {
         divAnswer.innerHTML = "";
         for (const k of splitedWithComma) {
-            console.log(k);
+            // console.log(k);
             divAnswer.innerHTML += searchWithAddress(k, showBook);
             setTitle(current_folder);
         }
     }
 
+    current_page = "view";
     hiddenSelect(true);
     btnPractice.hidden = false;
     scrollTop();
@@ -404,13 +410,13 @@ function search(keyword, showBook = false) {
 
 function searchWithAddress(address, showBook = false) {
     address = address.replaceAll(" ", "");
-    console.log(address);
+    // console.log(address);
     let resultHTML = "";
     let codes = address2code(address);
     if (codes.length == 1) {
         // 단일 성구일 경우
         let [b, c, v] = code2address(codes[0]);
-        console.log(b, c, v);
+        // console.log(b, c, v);
         resultHTML += getDivVerse(showBook ? address : v, getWord(b, c, v));
         setCurrentAddress(b, c, c, v, v);
     } else if (codes.length == 2) {

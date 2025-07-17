@@ -52,7 +52,7 @@
 .book:nth-child(44):hover,
 .book:nth-child(n + 45):nth-child(-n + 65):hover,
 .book:nth-child(66):hover {
-    background-color: var(--hover-color2);
+    background: radial-gradient(#fff0 0%, var(--hover-color2) 100%);
     border: 3px solid var(--hover-color);
     cursor: pointer;
 }
@@ -79,20 +79,38 @@
 }
 
 .chapter {
+    display: table;
     min-height: 50px;
     text-align: center;
     color: var(--text-color);
     /* color: var(--chapter-text-color); */
-    /* background-color: var(--chapter-bg-color1); */
-    box-shadow: 0 2px 2px #0005;
-    border-radius: 3px;
-    padding: 9px 0;
-    margin: 3px;
-    border: 2px solid var(--chapter-bg-color1);
+    background-color: #555;
+    /* box-shadow: 0 2px 2px #0005; */
+    text-shadow: 0 0 5px #000a;
+    /* border-radius: 10px; */
+    margin: 6px 0;
+    /* border: 4px double var(--chapter-bg-color1); */
+    color: var(--chapter-bg-color1);
     /* font-weight: bold; */
-    font-size: var(--font-size);
+    font-size: calc(var(--font-size) * 1.5);
     font-family: var(--verse-font);
-    transition: background-color 0.1s ease;
+    transition: all 0.2s ease;
+}
+
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(5n - 4) {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.chapter:nth-child(n):nth-child(-n + 200):nth-child(5n - 0),
+.chapter:last-child {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.chapter-num {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 1),
@@ -100,7 +118,7 @@
 .chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 5),
 .chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 7),
 .chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 9) {
-    /* background-color: var(--chapter-bg-color1); */
+    background-color: rgb(100, 100, 100);
 }
 
 .chapter:hover,
@@ -109,8 +127,9 @@
 .chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 5):hover,
 .chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 7):hover,
 .chapter:nth-child(n):nth-child(-n + 200):nth-child(10n - 9):hover {
-    background-color: #ddd;
-    color: var(--grey);
+    background-color: var(--chapter-bg-color1);
+    /* border: 4px double var(--hover-color); */
+    color: var(--text-color);
     cursor: pointer;
 }
 
@@ -191,18 +210,18 @@
     color: #0000;
     text-shadow: 0 0 calc(var(--font-size) / 1.5) var(--text-color);
     transition: all 0.2s ease;
-    cursor: crosshair;
+    cursor: text;
 }
 
 .word-practice:hover {
     color: var(--text-color);
-    text-shadow: 0 0 0 var(--hover-color);
+    text-shadow: 0 0 0 #0000;
 }
 
 .verse-practice::selection {
-    /* background-color: var(--input-color); */
-    text-shadow: 0 0 0 var(--hover-color);
-    color: #ddd;
+    /* background-color: var(--hover-color); */
+    text-shadow: 0 0 5px var(--hover-color);
+    color: var(--text-color);
 }
 
 .ta-practice {
@@ -299,6 +318,7 @@
         var(--input-color) 50%,
         var(--bg-color) 60%
     );
+    margin-bottom: 20px;
 }
 
 #folders {
@@ -311,15 +331,16 @@
 
 .folder {
     display: flex;
+    z-index: 0;
     flex-direction: column;
     justify-self: center;
     align-items: center;
     cursor: pointer;
-    z-index: 100;
 }
 
 .folder-icon {
     color: var(--book1);
+    z-index: 0;
     font-size: 10rem !important;
     text-shadow: 0 -5px 0 var(--text-color);
     transition: all 0.15s linear;
@@ -328,18 +349,24 @@
 .folder-icon:hover {
     transform: rotateX(30deg) translateY(6px);
     text-shadow: 0 -19px 0 var(--main-color);
+    z-index: 0;
 }
 
 .folder-label {
     top: -84px;
     position: relative;
+    z-index: 0;
     color: var(--text-color);
     font-family: var(--verse-font);
+    font-size: 1rem;
     pointer-events: none;
     /* font-weight: bold; */
 }
 
 #folder-add {
+    position: relative;
+    top: -12px;
+    z-index: 0;
     width: 100px;
     height: 100px;
     border-radius: 50%;
@@ -387,6 +414,7 @@
     background-color: var(--blur-color);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
+    z-index: 100;
 }
 
 .container {
@@ -405,7 +433,7 @@
     background-color: var(--chapters-bg-color);
     border: 5px solid var(--chapters-bg-color);
     border-radius: 15px;
-    z-index: -50;
+    z-index: 100;
 }
 
 .container::-webkit-scrollbar {
@@ -433,6 +461,10 @@
 #input-folder-name:focus {
     outline: none;
     border: 2px solid var(--main-color);
+}
+
+#input-folder-verse {
+    font-size: 1rem;
 }
 
 #folder-adder-btn-container {

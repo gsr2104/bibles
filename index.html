@@ -32,18 +32,17 @@
                     <span id="btn-settings" class="material-icons"
                         >settings</span
                     >
-                    <span id="btn-select" class="material-icons">
+                    <!-- <span id="btn-select" class="material-icons">
                         bookmark_add</span
-                    >
+                    > -->
                 </span>
+                <button hidden class="btn-righttop" id="btn-practice">
+                    연습하기
+                </button>
+                <button hidden class="btn-righttop" id="btn-cancel">
+                    취소하기
+                </button>
             </span>
-
-            <button hidden class="btn-righttop" id="btn-practice">
-                연습하기
-            </button>
-            <button hidden class="btn-righttop" id="btn-cancel">
-                취소하기
-            </button>
 
             <input type="text" id="search" placeholder="검색하세요" />
         </div>
@@ -81,7 +80,7 @@
         <div hidden id="folder-verse-container" class="blur-container">
             <div id="folder-verse" class="container">
                 <div id="folder-setting-label">
-                    <span id="folder-name-label"></span> 폴더 구절 추가
+                    <span id="folder-name-label"></span> 폴더 구절 등록
                 </div>
                 <textarea
                     id="input-folder-verse"
@@ -92,15 +91,16 @@
 (예: 마1:21, 계1:1-8, 롬8장)"
                 ></textarea>
 
-                <button id="btn-folder-verse" class="btn-main">완료</button>
-
-                <button
-                    id="btn-folder-delete"
-                    class="btn-main"
-                    style="background-color: var(--cancel-color)"
-                >
-                    폴더 제거
-                </button>
+                <div id="folder-verse-button-container">
+                    <button id="btn-folder-verse" class="btn-main">완료</button>
+                    <button
+                        id="btn-folder-delete"
+                        class="btn-main"
+                        style="background-color: var(--cancel-color)"
+                    >
+                        폴더 제거
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -203,7 +203,7 @@
                     </div>
                     <input
                         type="range"
-                        min="0.2"
+                        min="-5"
                         max="50"
                         step="0.1"
                         value="1.5"
@@ -316,6 +316,12 @@
                     </label>
                 </div>
             </div>
+        </div>
+
+        <div id="btn-copy">
+            <button class="btn-save" id="btn-hide">
+                <span class="material-icons">create_new_folder</span>
+            </button>
         </div>
 
         <script src="address.js"></script>

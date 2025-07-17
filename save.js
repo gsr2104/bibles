@@ -41,6 +41,7 @@ if (folderList != null) {
     for (const folder in folderList) {
         let divFolder = document.createElement("div");
         divFolder.classList.add("folder");
+        divFolder.id = `folder-${folder}`;
         divFolder.innerHTML = `<span class="material-icons folder-icon" style="color: var(--book${folderList[folder]["color"]}) !important">folder</span><div class="folder-label">${folder}</div>`;
 
         divFolder.addEventListener("click", (e) => {
@@ -59,15 +60,32 @@ if (folderList != null) {
                 folderNameLabel.style.color = `var(--book${folderList[folder]["color"]})`;
             } else {
                 // 폴더로 이동
-                current_folder = folder;
-                search(verse, (showBook = true));
-                current_page = "view";
-                divTitle.innerHTML = "";
-                divTitle.append(divFolder);
+                moveToFolder(folder, divFolder);
+                return;
             }
         });
         divFolders.prepend(divFolder);
     }
+}
+
+function moveToFolder(folder, divFolder = null) {
+    if (divFolder == null) {
+        divFolder = document.getElementById(`folder-${current_folder}`);
+    }
+
+    console.log("move to " + folder);
+    divAnswer.innerHTML = "";
+
+    current_folder = folder;
+    current_page = "view";
+    inFolder = true;
+
+    let verse = folderList[folder]["verse"];
+    search(verse, (showBook = true));
+
+    divTitle.innerHTML = "";
+    divTitle.append(divFolder);
+    btnContainer.hidden = true;
 }
 
 let textarea = document.createElement("textarea");
@@ -156,13 +174,19 @@ folderVerse.addEventListener("click", (e) => {
 // });
 
 btnFolderVerse.addEventListener("click", (e) => {
+    if (inputFolderVerse.value === "") {
+        folderVerseContainer.hidden = true;
+        return;
+    }
     let verses = inputFolderVerse.value.split(",");
     let verse_string = "";
     let isFirst = true;
     for (const verse of verses) {
+        let v = makeCorrectAddress(verse);
+        if (v == null || v == "null") continue;
         if (!isFirst) verse_string += ", ";
         else isFirst = false;
-        verse_string += makeCorrectAddress(verse);
+        verse_string += v;
     }
 
     let f = localStorage.getItem("folder_list");
@@ -172,10 +196,12 @@ btnFolderVerse.addEventListener("click", (e) => {
 
     folderVerseContainer.hidden = true;
 
+    moveToFolder(current_folder);
     location.reload(true);
 });
 
 btnFolderDelete.addEventListener("click", (e) => {
+    if (!confirm("정말로 폴더를 삭제하시겠습니까?")) return;
     let f = localStorage.getItem("folder_list");
     f = JSON.parse(f);
     delete f[current_folder];

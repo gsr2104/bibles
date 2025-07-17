@@ -302,7 +302,7 @@ function address2code(address) {
         type = 4;
     }
 
-    console.log("유형: " + type);
+    // console.log("유형: " + type);
 
     switch (type) {
         case 1:

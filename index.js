@@ -13,6 +13,7 @@ const checkboxTheme = document.getElementById("settings-theme-checkbox");
 const cutInputs = document.querySelectorAll(".cut-input");
 
 let current_page = "home"; // home, select, view, practice, settings
+let inFolder = false;
 
 const dict_light_mode = {
     "--bg-color": "#ffffff",
@@ -29,8 +30,8 @@ const dict_light_mode = {
     "--book4": "#ffd8d8",
     "--book5": "#d2f5ca",
     "--book6": "#f5def3",
-    "--book7": "#f9ffbf",
-    "--book7": "#fbb9fdff",
+    "--book7": "#fffbbfff",
+    "--book8": "#fbb9fdff",
     "--blur-color": "#fff3",
     "--chapters-bg-color": "grey",
     "--chapter-bg-color1": "#eee",
@@ -173,6 +174,8 @@ document.addEventListener("DOMContentLoaded", function () {
             setVariable(key, value);
         }
     }
+
+    this.body.style.transition = "background-color 0.3s ease";
 
     // Set initial value from localStorage
     getSettingValue("--font-size", "rem", silderFontSize, 1);
@@ -317,3 +320,15 @@ function valueMapping(value, minValue1, maxValue1, minValue2, maxValue2) {
         minValue2
     );
 }
+
+history.pushState(null, null, location.href);
+
+window.onpopstate = function (event) {
+    console.log(event);
+    if (current_page === "view") location.reload(true);
+    else if (current_page === "select") divChaptersContainer.hidden = true;
+    else if (current_page === "practice") btnCancel.click();
+    else if (current_page === "home") history.go(-1);
+
+    history.go(1);
+};
