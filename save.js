@@ -14,6 +14,7 @@ const folderNameLabel = document.getElementById("folder-name-label");
 const inputFolderVerse = document.getElementById("input-folder-verse");
 
 let current_folder = "";
+let verseLengths = [];
 
 let html = "";
 for (let i = 1; i <= 8; i++) {

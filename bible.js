@@ -102,6 +102,15 @@ btnNext.addEventListener("click", () => {
 btnPractice.addEventListener("click", () => {
     entry = [];
     answers = [];
+    let idx = 0;
+    let isFirst = true;
+    let count = verseLengths[idx];
+    let verses;
+    if (inFolder) {
+        verses = folderList[current_folder]["verse"].split(",");
+        // console.log(verses);
+    }
+
     for (const c of divAnswer.children) {
         c.children[1].classList.add("verse-practice");
         c.children[1].classList.add("verse-practice-temp");
@@ -114,6 +123,7 @@ btnPractice.addEventListener("click", () => {
         }
         c.children[1].innerHTML = verseHTML;
         entry.push(c);
+
         let textarea = document.createElement("textarea");
         textarea.className = "ta-practice";
         textarea.rows = 1;
@@ -153,9 +163,38 @@ btnPractice.addEventListener("click", () => {
 
         c.children[1].appendChild(div);
         c.children[1].appendChild(textarea);
+
+        if (inFolder) {
+            let divPracticeVerse = c.children[1];
+            let divVerse = c.children[0];
+            let v = divVerse.cloneNode(true);
+            v.innerText = v.innerText.split(":")[1];
+            divVerse.remove();
+            if (verseLengths[idx] > 1) {
+                divPracticeVerse.prepend(v);
+            }
+
+            if (isFirst) {
+                let divProblemNumber = document.createElement("div");
+                divProblemNumber.className = "problem";
+                divProblemNumber.innerHTML = `<span class="problem-num">${
+                    idx + 1
+                }</span><span class="problem-verse">${verses[idx]}</span>`;
+                divPracticeVerse.prepend(divProblemNumber);
+                isFirst = false;
+            }
+        }
+
+        count -= 1;
+        if (count <= 0) {
+            isFirst = true;
+            idx += 1;
+            count = verseLengths[idx];
+        }
     }
     setPractice(true);
     current_page = "practice";
+
     // divAnswer.innerHTML = "";
     // for (const e of entry) divAnswer.appendChild(e);
 });
@@ -363,6 +402,8 @@ function showChapters(book) {
 
 //////////////////SEARCH//////////////////////
 function search(keyword, showBook = false) {
+    verseLengths = [];
+
     keyword = keyword.replaceAll("~", "-");
     keyword = keyword.replaceAll("/", ":");
     keyword = keyword.replaceAll(";", ":");
@@ -391,13 +432,17 @@ function search(keyword, showBook = false) {
 
     let splitedWithComma = checkKeyword.split(",");
     // Search with address
-    if (splitedWithComma.length == 1)
-        divAnswer.innerHTML = searchWithAddress(checkKeyword, showBook);
-    else {
+    if (splitedWithComma.length == 1) {
+        let results = searchWithAddress(checkKeyword, showBook);
+        divAnswer.innerHTML = results[0];
+        verseLengths = [results[1]];
+    } else {
         divAnswer.innerHTML = "";
         for (const k of splitedWithComma) {
             // console.log(k);
-            divAnswer.innerHTML += searchWithAddress(k, showBook);
+            let results = searchWithAddress(k, showBook);
+            divAnswer.innerHTML += results[0];
+            verseLengths.push(results[1]);
             setTitle(current_folder);
         }
     }
@@ -410,6 +455,7 @@ function search(keyword, showBook = false) {
 
 function searchWithAddress(address, showBook = false) {
     address = address.replaceAll(" ", "");
+    let length = 0;
     // console.log(address);
     let resultHTML = "";
     let codes = address2code(address);
@@ -418,6 +464,7 @@ function searchWithAddress(address, showBook = false) {
         let [b, c, v] = code2address(codes[0]);
         // console.log(b, c, v);
         resultHTML += getDivVerse(showBook ? address : v, getWord(b, c, v));
+        length = 1;
         setCurrentAddress(b, c, c, v, v);
     } else if (codes.length == 2) {
         // 범위 성구일 경우
@@ -430,6 +477,7 @@ function searchWithAddress(address, showBook = false) {
                     showBook ? b + c1 + ":" + v : v,
                     getWord(b, c1, v)
                 );
+                length += 1;
             }
             setCurrentAddress(b, c1, c2, v1, v2);
         } else {
@@ -444,13 +492,14 @@ function searchWithAddress(address, showBook = false) {
                         showBook ? b + c + ":" + v : c + ":" + v,
                         getWord(b, c, v)
                     );
+                    length += 1;
                 }
             }
             setCurrentAddress(b, c1, c2, v1, v2);
         }
     }
 
-    return resultHTML;
+    return [resultHTML, length];
 }
 
 function searchWithWord(keyword) {
@@ -466,7 +515,8 @@ function searchWithWord(keyword) {
         let correct = dictWord[key];
         for (const addr of correct) {
             // console.log(addr);
-            let v = searchWithAddress(addr);
+            let v,
+                _ = searchWithAddress(addr);
             html += getDivVerse(addr, v[0][3]);
             count++;
         }
